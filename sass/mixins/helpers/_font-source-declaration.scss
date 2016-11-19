@@ -1,0 +1,27 @@
+// basecondition ~ scss ~ v4.1.0
+// copyright 2015 ~ Joachim Doerr ~ hello@basecondition.com
+// licensed under MIT or GPLv3 ~ git.io/OJYZgw
+
+// forked from git.io/1dMSeg
+
+// @function: font-source-declaration
+// Used for creating the source string for fonts using @font-face
+
+@function font-source-declaration($font-family, $file-path, $file-formats) {
+    $src: null;
+    $formats-map: (
+            eot:   url("#{$file-path}.eot?#iefix") format("embedded-opentype"),
+            woff2: url("#{$file-path}.woff2") format("woff2"),
+            woff:  url("#{$file-path}.woff") format("woff"),
+            ttf:   url("#{$file-path}.ttf") format("truetype"),
+            svg:   url("#{$file-path}.svg##{$font-family}") format("svg")
+    );
+
+    @each $format, $file-path in $formats-map {
+        @if contains($file-formats, $format) {
+            $src: append($src, $file-path, comma);
+        }
+    }
+
+    @return $src;
+}

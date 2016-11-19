@@ -1,0 +1,136 @@
+// Background property for adding multiple backgrounds using shorthand
+// notation.
+
+// @method: background
+// @usage: @include background(linear-gradient(top, orange, red));
+//         @include background(radial-gradient(circle at 40% 40%, orange, red));
+//         @include background(url("/images/a.png") no-repeat, linear-gradient(orange, red));
+//         @include background(url("image.png") center center, linear-gradient(orange, red), url("image.png"));
+
+@mixin background($backgrounds...) {
+    $webkit-backgrounds: ();
+    $spec-backgrounds: ();
+
+    @each $background in $backgrounds {
+        $webkit-background: ();
+        $spec-background: ();
+        $background-type: type-of($background);
+
+        @if $background-type == string or $background-type == list {
+            $background-str: if($background-type == list, nth($background, 1), $background);
+
+            $url-str: str-slice($background-str, 0, 3);
+            $gradient-type: str-slice($background-str, 0, 6);
+
+            @if $url-str == "url" {
+                $webkit-background: $background;
+                $spec-background: $background;
+            } @else if $gradient-type == "linear" {
+                $gradients: _linear-gradient-parser("#{$background}");
+                $webkit-background: map-get($gradients, webkit-image);
+                $spec-background: map-get($gradients, spec-image);
+            } @else if $gradient-type == "radial" {
+                $gradients: _radial-gradient-parser("#{$background}");
+                $webkit-background: map-get($gradients, webkit-image);
+                $spec-background: map-get($gradients, spec-image);
+            } @else {
+                $webkit-background: $background;
+                $spec-background: $background;
+            }
+        } @else {
+            $webkit-background: $background;
+            $spec-background: $background;
+        }
+
+        $webkit-backgrounds: append($webkit-backgrounds, $webkit-background, comma);
+        $spec-backgrounds: append($spec-backgrounds, $spec-background, comma);
+    }
+
+    background: $webkit-backgrounds;
+    background: $spec-backgrounds;
+}
+
+// @method: background-image
+// @usage: @include background-image(linear-gradient(top, orange, red));
+//         @include background-image(radial-gradient(50% 50%, cover circle, orange, red));
+//         @include background-image(url("/images/a.png"), linear-gradient(orange, red));
+//         @include background-image(url("image.png"), linear-gradient(orange, red), url("image.png"));
+//         @include background-image(linear-gradient(hsla(0, 100%, 100%, 0.25) 0%, hsla(0, 100%, 100%, 0.08) 50%, transparent 50%), linear-gradient(orange, red));
+
+@mixin background-image($images...) {
+    $webkit-images: ();
+    $spec-images: ();
+
+    @each $image in $images {
+        $webkit-image: ();
+        $spec-image: ();
+
+        @if (type-of($image) == string) {
+            $url-str: str-slice($image, 0, 3);
+            $gradient-type: str-slice($image, 0, 6);
+
+            @if $url-str == "url" {
+                $webkit-image: $image;
+                $spec-image: $image;
+            } @else if $gradient-type == "linear" {
+                $gradients: _linear-gradient-parser($image);
+                $webkit-image: map-get($gradients, webkit-image);
+                $spec-image: map-get($gradients, spec-image);
+            } @else if $gradient-type == "radial" {
+                $gradients: _radial-gradient-parser($image);
+                $webkit-image: map-get($gradients, webkit-image);
+                $spec-image: map-get($gradients, spec-image);
+            }
+        }
+
+        $webkit-images: append($webkit-images, $webkit-image, comma);
+        $spec-images: append($spec-images, $spec-image, comma);
+    }
+
+    background-image: $webkit-images;
+    background-image: $spec-images;
+}
+
+// @method: background-clip
+// @usage: @include background-clip(border-box);
+// @syntax: border-box|padding-box|content-box
+
+@mixin background-clip($clip) {
+    // webkit and mozilla use the deprecated short [border | padding]
+    $clip: unquote($clip);
+    $deprecated: $clip;
+    @if $clip == padding-box {
+        $deprecated: padding;
+    }
+    @if $clip == border-box {
+        $deprecated: border;
+    }
+    // Support for webkit and mozilla's use of the deprecated short form
+    @include prefixer(background-clip, $deprecated, webkit moz);
+    @include prefixer(background-clip, $deprecated, khtml spec);
+}
+
+// @method: background-origin
+// @usage: @include background-origin(padding-box);
+// @syntax: padding-box|border-box|content-box
+
+@mixin background-origin($origin...) {
+    @include prefixer(background-origin, $origin, webkit moz o spec);
+}
+
+// @method: background-size
+// @usage: @include background-size(100px, 100px);
+//         @include background-size(contain);
+// @syntax: length|percentage|cover|contain
+
+@mixin background-size($size...) {
+    @include prefixer(background-size, $size, webkit moz o spec);
+}
+
+// @method: background-attachment
+// @usage: @include background-attachment(fixed);
+// @syntax: scroll|fixed|local
+
+@mixin background-attachment($attachment...) {
+    @include prefixer(background-attachment, $attachment, spec);
+}

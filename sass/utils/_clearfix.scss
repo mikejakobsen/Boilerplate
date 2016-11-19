@@ -1,0 +1,17 @@
+// @method: clearfix
+// @usage: @include clearfix();
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+// @method: cfx
+// @usage: @include cfx();
+
+@mixin cfx {
+  @include clearfix;
+}

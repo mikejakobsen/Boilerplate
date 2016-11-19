@@ -1,0 +1,7 @@
+// @method: appearance
+// @usage: @include appearance(button);
+// @syntax: normal|icon|window|button|menu|field
+
+@mixin appearance($value) {
+    @include prefixer(appearance, $value, webkit moz ms o spec);
+}

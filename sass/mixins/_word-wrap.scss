@@ -1,0 +1,14 @@
+// @method: word-wrap
+// @usage: @include word-wrap(break-word);
+// @syntax: normal|break-word|initial|inherit
+
+@mixin word-wrap($wrap: break-word) {
+  overflow-wrap: $wrap;
+  word-wrap: $wrap;
+
+  @if $wrap == break-word {
+    word-break: break-all;
+  } @else {
+    word-break: $wrap;
+  }
+}

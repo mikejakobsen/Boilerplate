@@ -1,0 +1,14 @@
+// @method: perspective
+// @usage: @include perspective();
+// @syntax: none|<length>
+
+@mixin perspective($depth: none) {
+  @include prefixer(perspective, $depth, webkit moz spec);
+}
+
+// @method: perspective-origin
+// @usage: @include perspective-origin();
+
+@mixin perspective-origin($value: 50% 50%) {
+  @include prefixer(perspective-origin, $value, webkit moz spec);
+}

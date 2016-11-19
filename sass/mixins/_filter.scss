@@ -1,0 +1,8 @@
+// @method: filter
+// @usage: @include filter(grayscale(50%));
+// @syntax: <filter-function> [<filter-function]*|none
+
+@mixin filter($function: none) {
+    @include prefixer(filter, $function, webkit spec);
+}
+

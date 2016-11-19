@@ -1,0 +1,16 @@
+html {
+    @include html();
+}
+body {
+    @include body;
+    font-family: $helvetica;
+}
+#page {
+    // @include sticky-footer(110px,80px,450px);
+    @include backface-visibility(hidden);
+    overflow: hidden;
+}
+// unset outline
+* {
+    @include unset-outline;
+}

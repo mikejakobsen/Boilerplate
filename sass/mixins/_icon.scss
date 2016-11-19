@@ -1,0 +1,25 @@
+// @method: icon
+// @usage: @include icon();
+
+@mixin icon($icon: false, $font: false, $position: before, $smoothing: true) {
+  @if $position == both {
+    $position: 'before, &:after';
+  }
+
+  &:#{$position} {
+    @if $icon {
+      content: quote($icon);
+    }
+    @if $font {
+      font-family: $font;
+    }
+    @if $smoothing {
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      text-transform: none;
+      @include smoothing(antialiased);
+    }
+    @content;
+  }
+}

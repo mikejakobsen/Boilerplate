@@ -1,0 +1,7 @@
+// @method: backface-visibility
+// @usage: @include backface-visibility(button);
+// @syntax: visible|hidden|initial|inherit
+
+@mixin backface-visibility($visibility) {
+    @include prefixer(backface-visibility, $visibility, webkit spec);
+}

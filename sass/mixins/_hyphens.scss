@@ -1,0 +1,7 @@
+// @method: hyphens
+// @usage: @include hyphens(auto);
+// @syntax: none|manual|auto
+
+@mixin hyphens($hyphenation: none) {
+  @include prefixer(hyphens, $hyphenation, webkit moz ms spec);
+}

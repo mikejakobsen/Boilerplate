@@ -1,0 +1,31 @@
+/*
+ * Default link
+ */
+
+a {
+  position: relative;
+  color: $link-color;
+  text-decoration: none;
+  transition: color $animation-sec $animation-ease;
+  backface-visibility: hidden;
+}
+a::after {
+  position: absolute;
+  display: inline-block;
+  content: '';
+  height: 0.0em;
+  bottom: -0.08em;
+  left: -0.15em;
+  right: -0.15em;
+  z-index: -1;
+  pointer-events: none;
+  background-color: $link-color;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: height 0.2s cubic-bezier(0.54, 0.08, 0, 1.18),
+              background $animation-sec $animation-ease;
+}
+a:hover::after,
+a.active::after {
+  height: 0.5em;
+}
